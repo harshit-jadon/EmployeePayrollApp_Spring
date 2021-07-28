@@ -11,36 +11,37 @@ import java.util.List;
 @Service
 public class EmployeePayrollService implements IEmployeePayrollService{
 
+    List<EmployeePayrollData> employeePayrollDataList = new ArrayList<>();
+
     @Override
     public List<EmployeePayrollData> getEmployeePayroll() {
-        List<EmployeePayrollData> employeePayrollDataList = new ArrayList<>();
-        employeePayrollDataList.add(new EmployeePayrollData(1, new EmployeePayrollDTO("Ankur",456987)));
         return employeePayrollDataList;
     }
 
     @Override
     public EmployeePayrollData getEmployeePayrollById(int id) {
-        EmployeePayrollData employeePayrollData = null;
-        employeePayrollData = new EmployeePayrollData(1, new EmployeePayrollDTO("Ankur",456987));
-        return employeePayrollData;
+        return employeePayrollDataList.get(id-1);
     }
 
     @Override
     public EmployeePayrollData createEmployeePayroll(EmployeePayrollDTO employeePayrollDto) {
         EmployeePayrollData employeePayrollData= null;
-        employeePayrollData = new EmployeePayrollData(1, employeePayrollDto);
+        employeePayrollData = new EmployeePayrollData(employeePayrollDataList.size()+1, employeePayrollDto);
+        employeePayrollDataList.add(employeePayrollData);
         return employeePayrollData;
     }
 
     @Override
-    public EmployeePayrollData updateEmployeePayroll(EmployeePayrollDTO employeePayrollDto) {
-        EmployeePayrollData employeePayrollData= null;
-        employeePayrollData = new EmployeePayrollData(1, employeePayrollDto);
+    public EmployeePayrollData updateEmployeePayroll(int id,EmployeePayrollDTO employeePayrollDto) {
+        EmployeePayrollData employeePayrollData= this.getEmployeePayrollById(id);
+        employeePayrollData.setName(employeePayrollDto.name);
+        employeePayrollData.setSalary(employeePayrollDto.salary);
+        employeePayrollDataList.set(id-1,employeePayrollData);
         return employeePayrollData;
     }
 
     @Override
     public void deleteEmployeePayroll(int id) {
-
+    employeePayrollDataList.remove(id-1);
     }
 }
